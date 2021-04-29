@@ -6,24 +6,22 @@ from typing import List, Dict
 class Database:
 
     def _get_database_file_location(self) -> str:
-        return str(pathlib.Path.cwd() / ".." / "the_source_of_truth.db")
-
-    def _open_database_connection(self, file_location: str):
-        our_rubbish_db = shelve.open(file_location)
-        return our_rubbish_db
+        return str(pathlib.Path.home() / "the_source_of_truth.db")
 
     def __init__(self):
         """
         We store the database instance in self.db this is the shelf file and we open it on class instantiation
         """
-        self.db = self._open_database_connection(self._get_database_file_location())
+        self.db = shelve.open(self._get_database_file_location())
 
     def get_all_books(self)-> List[Dict]:
-        self.db
+        # Lets write the code to get all the values from our database
+        # return list(self.db.values())
         return []
 
     def store_book(self, item: Dict):
-        pass
+        key = item["title"]
+        self.db[key] = item
 
 
 if __name__ == '__main__':
@@ -36,5 +34,5 @@ if __name__ == '__main__':
     print(binday)
     rubbish_db.close()
 
-    rubbish_db = shelve.open("junk_db_file")
+    rubbish_db = shelve.open("../junk_db_file")
     print(rubbish_db["binday"])

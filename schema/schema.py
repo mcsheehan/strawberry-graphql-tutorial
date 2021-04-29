@@ -13,6 +13,7 @@ from dataclasses_json import dataclass_json
 
 from schema.database import Database
 
+print("Opening database")
 db = Database()
 
 @dataclass_json
@@ -29,9 +30,16 @@ example_book = Book(
 
 
 def get_books() -> List[Book]:
-    # Lets actually get our books from the database here
+    # 1. Lets actually get our books from the database here
+    # book_list = []
+    # for book in db.get_all_books():
+    #     book = Book.from_dict(book)
+    #     book_list.append(book)
+    #
+    # return book_list
+
+    # 2. We shouldn't actually return junk. Get rid of this
     return [example_book]
-    return db.get_all_books()
 
 
 def get_book_by_title(book_title: str = "F. Scott Fitzgerald") -> Book:
@@ -40,9 +48,8 @@ def get_book_by_title(book_title: str = "F. Scott Fitzgerald") -> Book:
 
 @strawberry.type(description="This is the root level query description")
 class Query:
-    books: List[Book] = strawberry.field(resolver=get_books, description="This retrieves all books in a query")
-    specific_book: Book = strawberry.field(resolver=get_book_by_title)
-
+    books: List[Book] = strawberry.field(resolver=get_books, description="")
+    #get_book_by_title: Book = strawberry.field(resolver=get_book_by_title)
 
 
 @strawberry.type
@@ -54,16 +61,17 @@ class Mutation:
         added_book = Book(title=title, author=author)
         print(type(author))
 
-        # 1. Let's check if our inputs are valid....
-
+        # 1. Let's check if our inputs are valid GIGO you put junk in you'll get junk out....
         # validation = Book.schema().validate(added_book.to_dict())
         # print(validation)
+        # if validation != {}:
+        #     raise Exception(f"Invalid book {validation }")
 
         # 2. Let's actually add a book to the database here
         # db.store_book(added_book.to_dict())
+        # print("stored a book")
 
-
-        # Returning a book for adding a book is a little weird lets return a bool or something a bit saner / an id
+        # 3. Returning a book for adding a book is a little weird lets return a bool or something a bit saner / an id
         return added_book
 
 
