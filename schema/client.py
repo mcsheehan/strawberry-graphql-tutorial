@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from gql import gql, Client
 from gql.transport.requests import RequestsHTTPTransport
@@ -13,7 +13,7 @@ transport = RequestsHTTPTransport(url=url, headers=headers)
 # Create a GraphQL client using the defined transport
 client = Client(transport=transport, fetch_schema_from_transport=False)
 
-def get_book_by_id(book_title: str) -> Dict:
+def get_book_by_id(book_title: str) -> Optional[Dict]:
     # Provide a GraphQL query
     query = gql(
         """
