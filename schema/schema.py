@@ -50,12 +50,17 @@ class Mutation:
 
     @strawberry.field
     def add_book(self, title: str, author: float) -> Book:
-        print(type(author))
 
         added_book = Book(title=title, author=author)
+        print(type(author))
 
-        # Let's actually add a book to the database here
-        db.store_book(added_book)
+        # 1. Let's check if our inputs are valid....
+
+        # validation = Book.schema().validate(added_book.to_dict())
+        # print(validation)
+
+        # 2. Let's actually add a book to the database here
+        # db.store_book(added_book.to_dict())
 
 
         # Returning a book for adding a book is a little weird lets return a bool or something a bit saner / an id
